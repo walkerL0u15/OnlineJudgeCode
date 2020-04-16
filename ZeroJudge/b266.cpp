@@ -9,7 +9,7 @@ void t(){
     for(int i=0;i<r;++i)
         for(int j=0;j<c;++j)
             cpy[c-1-j][i]=block[i][j];
-    int temp=r;r=c;c=temp;
+    swap(r,c);
     memcpy(block,cpy,sizeof(block));
     return;
 }
