@@ -1,49 +1,56 @@
+#include<stdio.h>
+#include<string>
 #include<iostream>
 #include<queue>
 #include<utility>
 #include<string.h>
 using namespace std;
 
-#define INF 100000000
-typedef pair<int,int> P;
-
-int c,r,sx,sy,ex,ey;
-int dx[4]={0,-1,0,1},dy[4]={1,0,-1,0};
-bool road[102][102];
-int to[102][102];
-int bfs(){
-	queue<P> que;
-	que.push(P(sx,sy));
-	for(int i=0;i<102;++i)
-		for(int j=0;j<102;++j)
-			to[i][j]=INF;
-	to[sy][sx]=0;
-	while(!que.empty()){
-		P p=que.front();que.pop();
-		if(p.first==ex&&p.second==ey) break;
-		for(int i=0;i<4;++i){
-			int x=p.first+dx[i],y=p.second+dx[i];
-			if(x>=0&&y>=0&&x<=c&&y<=r&&to[y][x]==INF&&road[y][x]!=1){
-				que.push(P(x,y));
-				to[y][x]=to[p.second][p.first]+1;
-			}
-		}
-	}
-	return to[ey][ex];
-}
-
+#define P pair<int,int>
 
 int main()
 {
-	int T;
-	scanf(" %d",&T);
-	while(T--){
-		scanf(" %d %d %d %d %d %d",&r,&c,&sy,&sx,&ey,&ex);
-		for(int i=0;i<r;++i)
-			for(int j=0;j<c;++j)
-				scanf(" %d",&road[i][j]);
-		--r,--c,--sy,--sx,--ey,--ex;
-		printf("%d\n",bfs());
+	ios::sync_with_stdio(false);cin.tie(0);
+	int N,lia,han,slia,shan,elia,ehan;
+	int w[100][100];
+	bool puzzle[101][101],f;
+	int addhan[4]={1,0,-1,0};
+	int addlia[4]={0,-1,0,1};
+	string t;
+	queue<P> p;
+	P test;
+	scanf(" %d",&N);
+	while(N--){
+		f=false;
+		memset(w,0,sizeof(w));
+		scanf(" %d %d %d %d %d %d",&han,&lia,&shan,&slia,&ehan,&elia);
+		for(int i=1;i<=han;++i){
+			cin>>t;
+			for(int j=1;j<=lia;++j)
+				puzzle[i][j]=t[j-1]-'0';
+		}
+		w[shan][slia]=1;
+		p.push(P(shan,slia));
+		while(!p.empty()){
+			test=p.front();
+			p.pop();
+			if(test.first==ehan&&test.second==elia){
+				f=true;
+				printf("%d\n",w[ehan][elia]);
+				break;
+			}
+			for(int i=0;i<4;++i){
+				int nhan=test.first+addlia[i],nlia=test.second+addlia[i];
+				if(nhan>0&&nlia>0&&nhan<=han&&nlia<=lia&&puzzle[nhan][nlia]!=1&&w[nhan][nlia]==0){
+					p.push(P(test.first+addhan[i],test.second+addlia[i]));
+					w[nhan][nlia]=w[test.first][test.second]+1;
+				}
+			}
+		}
+		while(!p.empty())
+			p.pop();
+		if(!f)
+			puts("0");
 	}
 	return 0;
 }
