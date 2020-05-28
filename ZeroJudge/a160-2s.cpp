@@ -2,7 +2,7 @@
 #include<string.h>
 
 int N,ans;
-bool dashl,dashr,r[12],c[12],flag;
+bool r[12],c[12],flag;
 char chess[12][12];
 bool chr[12],chl[24];
 void queen(int used,int han){
