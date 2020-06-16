@@ -15,8 +15,8 @@ int main()
     int N,d=0,cx,cy;
     D star[MaxN],s,ch;
     bool land[305][305],safe[305][305],used[305][305];
-    int ax[]={1,-1,0,0};
-    int ay[]={0,0,1,-1};
+    int ax[]={1,-1,0,0,0};
+    int ay[]={0,0,1,-1,0};
     memset(land,1,sizeof(land));
     memset(safe,1,sizeof(safe));
 	memset(used,0,sizeof(used));
@@ -24,8 +24,7 @@ int main()
     for(int i=0;i<N;++i){
         scanf(" %d %d %d",&star[i].x,&star[i].y,&star[i].t);
         ++star[i].x,++star[i].y;
-        safe[star[i].x][star[i].y]=false;
-        for(int j=0;j<4;++j)
+        for(int j=0;j<5;++j)
             safe[star[i].x+ax[j]][star[i].y+ay[j]]=false;
 	}
     sort(star,star+N,cmp);
@@ -36,8 +35,7 @@ int main()
         s=que.front();que.pop();
 		used[s.x][s.y]=false;
         while(star[d].t<=s.t){
-            land[star[d].x][star[d].y]=false;
-            for(int i=0;i<4;++i)
+            for(int i=0;i<5;++i)
                 land[star[d].x+ax[i]][star[d].y+ay[i]]=false;
 			++d;
         }
