@@ -1,42 +1,38 @@
-#include<stdio.h>
-#include<math.h>
-#include<set>
+#include<cstdio>
+#include<cmath>
 #include<algorithm>
 using namespace std;
 
-struct I{double l,r;};
-bool cmp(I &a,I &b){
-    if(a.r==b.r)
-        return a.l<b.l;
+struct R{
+    double r,l;
+}p[1005];
+bool cmp(R a,R b){
     return a.r<b.r;
 }
 
-int main()
-{
-    int N,cnt,time=1;
-    double x,y,d,now;
-    I land[1002];
-    bool flag;
+int main(){
+    int N,cnt,now,Case=1;
+    bool can;
+    double d,x,y;
     while(scanf(" %d %lf",&N,&d)==2&&N!=0){
-        flag=false;
+        can=true,cnt=1,now=0;
         for(int i=0;i<N;++i){
             scanf(" %lf %lf",&x,&y);
-            if(y>d) flag=true;
-            else{
-                land[i].l=x-sqrt(d*d-y*y);
-                land[i].r=x+sqrt(d*d-y*y);
+            if(y>d){
+                for(i=i+1;i<N;++i)
+                    scanf(" %lf %lf",&x,&y);
+                printf("Case %d: -1\n",Case++);
+                can=false;
+                break;
             }
+            p[i].r=x+sqrt(d*d-y*y),p[i].l=x-sqrt(d*d-y*y);
         }
-        if(flag){
-            printf("Case %d: -1\n",time++);
-            continue;
-        }
-        sort(land,land+N,cmp);
-        now=land[0].r,cnt=1;
+        if(!can) continue;
+        sort(p,p+N,cmp);
         for(int i=1;i<N;++i)
-            if(now<land[i].l)
-                now=land[i].r,++cnt;
-        printf("Case %d: %d\n",time++,cnt);
+            if(p[now].r<p[i].l)
+                ++cnt,now=i;
+        printf("Case %d: %d\n",Case++,cnt);
     }
     return 0;
 }
