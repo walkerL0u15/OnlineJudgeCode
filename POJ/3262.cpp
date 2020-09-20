@@ -1,29 +1,27 @@
-#include<stdio.h>
+#include<cstdio>
 #include<algorithm>
 using namespace std;
-#define ll long long
+typedef long long ll;
 
-struct C{double t,d,td;};
-bool cmp(C &a,C &b){
-	return a.td<b.td;
+struct C{
+    double t,e;
+}cows[100005];
+bool cmp(C a,C b){
+    return a.t/a.e<b.t/b.e;
 }
-C cows[100004];
 
-int main()
-{
-	int N;
-	ll ans=0,des=0;
-	scanf(" %d",&N);
-	for(int i=0;i<N;++i){
-		scanf(" %lf %lf",&cows[i].t,&cows[i].d);
-		cows[i].td=cows[i].t/cows[i].d;
-		des+=cows[i].d;
-	}
-	sort(cows,cows+N,cmp);
-	for(int i=0;i<N;++i){
-		des-=cows[i].d;
-		ans+=2*cows[i].t*des;
-	}
-	printf("%lld\n",ans);
-	return 0;
+int main(){
+    ll ans=0,flower=0,N;
+    scanf(" %lld",&N);
+    for(int i=0;i<N;++i){
+        scanf(" %lf %lf",&cows[i].t,&cows[i].e);
+        flower+=(int)cows[i].e;
+    }
+    sort(cows,cows+N,cmp);
+    for(int i=0;i<N;++i){
+        flower-=(int)cows[i].e;
+        ans+=flower*(int)cows[i].t;
+    }
+    printf("%lld\n",ans*2);
+    return 0;
 }
