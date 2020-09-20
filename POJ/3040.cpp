@@ -1,58 +1,56 @@
-#include<stdio.h>
-#include<string.h>
+#include<cstdio>
+#include<cstring>
 #include<algorithm>
-#include<utility>
+#include<map>
 using namespace std;
-#define ll long long
-#define P pair<int,int>
-#define INF 200000000
 
-bool cmp(P &a,P &b){return a.first>b.first;}
+int N,C,week=0,num,m[25];
+map<int,int> c;
+int use[25];
+int solve(){
+    int minimum=200000000;
+    for(int i=0;i<=N;++i)
+        if(use[i]>0)
+            minimum=min(minimum,c[m[i]]/use[i]);
+    for(int i=0;i<=N;++i)
+        c[m[i]]-=(use[i]*minimum);
+    return minimum;
+}
 
-int main()
-{
-	int N,C,need[22],temp;
-	ll week=0,add=0;
-	P coin[22];
-	bool flag;
-	scanf(" %d %d",&N,&C);
-	for(int i=0;i<N;++i){
-		scanf(" %d %d",&coin[i].first,&coin[i].second);
-		if(coin[i].first>=C) week+=coin[i].second,coin[i].second=0;
-	}
-	sort(coin,coin+N,cmp);
-	/////////////////////////calcutlate
-	while(true){
-		temp=C;
-		flag=true;
-		memset(need,0,sizeof(need));
-		//add until <=C
-		for(int i=0;i<N;++i){
-			if(coin[i].second>=0){
-				need[i]=min(temp/coin[i].first,coin[i].second);
-				temp-=need[i]*coin[i].first;
-			}
-			else if(temp<=0)
-				break;
-		}
-		//add to >=C
-		if(temp>0)
-			for(int i=N-1;i>=0;--i)
-				if(coin[i].second-need[i]>0){
-					++need[i];
-					temp-=coin[i].first;
-					break;
-				}
-		if(temp>0) break;
-		//add up
-		int num=INF;
-		for(int i=0;i<N;++i)
-			if(need[i]!=0)
-				num=min(num,coin[i].second/need[i]);
-		week+=num;
-		for(int i=0;i<N;++i)
-			coin[i].second-=need[i]*num;
-	}
-	printf("%lld\n",week);
-	return 0;
+int main(){
+    scanf(" %d %d",&N,&C);
+    for(int i=0;i<N;++i){
+        scanf(" %d %d",&m[i],&num);
+        c[m[i]]=num;
+    }
+    sort(m,m+N);
+    N--;
+    while(N>=0&&m[N]>=C)
+        week+=c[m[N]],N--;
+    int left,a;
+    while(true){
+        left=C;
+        memset(use,0,sizeof(use));
+        for(int i=N;i>=0;--i){
+            use[i]=min(c[m[i]],left/m[i]);
+            left-=use[i]*m[i];
+        }
+        if(left==0){
+            week+=solve();
+            continue;
+        }
+        for(int i=0;i<=N;++i){
+            if(c[m[i]]>0&&m[i]>left){
+                use[i]++;
+                left=-1;
+                break;
+            }
+        }
+        if(left<0)
+            week+=solve();
+        else
+            break;
+    }
+    printf("%d\n",week);
+    return 0;
 }
