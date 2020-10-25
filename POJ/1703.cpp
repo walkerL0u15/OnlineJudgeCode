@@ -31,14 +31,12 @@ int main(){
         init();
         scanf(" %d %d",&N,&Q);
         for(int i=0;i<Q;++i){
-            scanf(" %c",&c);
+            scanf(" %c %d %d",&c,&a,&b);
             if(c=='D'){
-                scanf(" %d %d",&a,&b);
                 unite(a,b+MaxN);
                 unite(b,a+MaxN);
             }
             else{
-                scanf(" %d %d",&a,&b);
                 if(same(a,b))
                     puts("In the same gang.");
                 else if(same(a,b+MaxN)||same(b,a+MaxN))
