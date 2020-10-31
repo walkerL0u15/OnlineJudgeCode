@@ -1,69 +1,53 @@
-#include<stdio.h>
+#include<cstdio>
 #include<algorithm>
 using namespace std;
+const int MaxF=10005,MaxM=10005;
+typedef long long ll;
 
-#define MaxN 10005
-#define MaxM 10005
-#define MaxE 50002
-
-struct edge{int f,t,cost;};
-int N,M,E;
-edge es[MaxE];
-int par[MaxN+MaxM],dep[MaxN+MaxM];
-
-void init_union(int n){
-    for(int i=0;i<=n;++i){
-        dep[i]=0,par[i]=i;
-	}
+struct edge{
+    int u,v,cost;
+}e[50005];
+int par[MaxF+MaxM],dep[MaxF+MaxM];
+void init(int n){
+    for(int i=0;i<=n;++i)
+        par[i]=i,dep[i]=0;
     return;
 }
 int find(int x){
-    if(par[x]==x) return x;
+    if(par[x]==x) return par[x];
     return par[x]=find(par[x]);
 }
-bool same(int x,int y){
-    return find(x)==find(y);
-}
-void unite(int x,int y){
-    int xp=find(x),yp=find(y);
-    if(xp==yp) return;
-    if(dep[xp]>dep[yp])
-        par[yp]=xp;
+bool unite(int x,int y){
+    int fx=find(x),fy=find(y);
+    if(fx==fy) return false;
+    if(dep[fx]>dep[fy]) par[fy]=fx;
     else{
-        par[xp]=yp;
-        if(dep[xp]==dep[yp]) dep[yp]++;
+        par[fx]=fy;
+        if(dep[fx]==dep[fy]) ++dep[fy];
     }
-    return;
+    return true;
 }
-bool cmp(edge &a,edge &b){
+bool cmp(edge a,edge b){
     return a.cost<b.cost;
 }
-int kruskal(){
-    sort(es,es+E,cmp);
-    init_union(N+M);
-    int res=0;
-	edge e;
-    for(int i=0;i<E;++i){
-		e=es[i];
-        if(!same(e.f,e.t)){
-			unite(e.f,e.t);
-			res+=e.cost;
-		}
-    }
-    return res;
-}
 
-int main()
-{
-    int T,f,t,c;
+int main(){
+    int T;
+    int R,F,M,ans;
     scanf(" %d",&T);
     while(T--){
-        scanf(" %d %d %d",&N,&M,&E);
-        for(int i=0;i<E;++i){
-            scanf(" %d %d %d",&f,&t,&c);
-            es[i].f=f,es[i].t=N+t,es[i].cost=-c;
+        ans=0;
+        scanf(" %d %d %d",&F,&M,&R);
+        for(int i=0;i<R;++i){
+            scanf(" %d %d %d",&e[i].u,&e[i].v,&e[i].cost);
+            e[i].v+=F,e[i].cost=-e[i].cost;
         }
-        printf("%d\n",(N+M)*10000+kruskal());
+        init(F+M+5);
+        sort(e,e+R,cmp);
+        for(int i=0;i<R;++i)
+            if(unite(e[i].u,e[i].v))
+                ans+=e[i].cost;
+        printf("%d\n",(F+M)*10000+ans);
     }
     return 0;
 }
