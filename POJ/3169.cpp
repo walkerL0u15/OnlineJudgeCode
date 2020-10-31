@@ -1,51 +1,37 @@
-#include<stdio.h>
+#include<cstdio>
 #include<algorithm>
 using namespace std;
+const int INF=0x3f3f3f3f;
 
-#define MaxN 1005
-#define MaxMD 10005
-#define MaxML 10005
-#define INF 20000000
+int AL[10005],BL[10005],DL[10005];
+int AD[10005],BD[10005],DD[10005];
 
-struct edge{int a,b,cost;};
-int N,ML,MD,d[MaxN];
-edge eml[MaxML],emd[MaxMD];
-
-void bellman(){
-	fill(d,d+N+1,INF);
-	d[1]=0;
-	for(int j=0;j<N;++j){
-		for(int j=N;j>=2;--j)
-			d[j-1]=min(d[j],d[j-1]);
-		for(int j=0;j<ML;++j)
-			d[eml[j].b]=min(d[eml[j].b],d[eml[j].a]+eml[j].cost);
-		for(int j=0;j<MD;++j){
-			d[emd[j].a]=min(d[emd[j].a],d[emd[j].b]-emd[j].cost);
-			if(d[emd[j].a]<0){
-				d[N]=-1;
-				return;
-			}
-		}
-	}
-	return;
-}
-
-int main()
-{
-	int v,u,c;
-	scanf(" %d %d %d",&N,&ML,&MD);
-	for(int i=0;i<ML;++i){
-		scanf(" %d %d %d",&v,&u,&c);
-		eml[i].a=v,eml[i].b=u,eml[i].cost=c;
-	}
-	for(int i=0;i<MD;++i){
-		scanf(" %d %d %d",&v,&u,&c);
-		emd[i].a=v,emd[i].b=u,emd[i].cost=c;
-	}
-	bellman();
-	if(d[N]==INF)
-		puts("-2");
-	else
-		printf("%d\n",d[N]);
-	return 0;
+int main(){
+    int N,ML,MD;
+    int d[10005];
+    scanf(" %d %d %d",&N,&ML,&MD);
+    for(int i=0;i<ML;++i)
+        scanf(" %d %d %d",&AL[i],&BL[i],&DL[i]);
+    for(int i=0;i<MD;++i)
+        scanf(" %d %d %d",&AD[i],&BD[i],&DD[i]);
+    fill(d,d+10005,INF);
+    d[1]=0;
+    for(int k=0;k<N;++k){
+        for(int i=N;i>=2;--i)
+            if(d[i]<INF)
+                d[i-1]=min(d[i-1],d[i]);
+        for(int i=0;i<ML;++i)
+            if(d[AL[i]]<INF)
+                d[BL[i]]=min(d[BL[i]],d[AL[i]]+DL[i]);
+        for(int i=0;i<MD;++i)
+            if(d[BD[i]]<INF)
+                d[AD[i]]=min(d[AD[i]],d[BD[i]]-DD[i]);
+    }
+    if(d[1]<0)
+        puts("-1");
+    else if(d[N]==INF)
+        puts("-2");
+    else
+        printf("%d\n",d[N]);
+    return 0;
 }
