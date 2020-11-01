@@ -1,39 +1,48 @@
-#include<stdio.h>
-#include<string.h>
-#define MaxN 501
+#include<cstdio>
+#include<cstring>
+const int INF=0x3f3f3f3f;
 
-struct edge{int from,to,cost;};
-int farm[MaxN],T,N,M,W;;
-edge es[5205];
-
-bool bellman(){
-	memset(farm,0,sizeof(farm));
-	for(int i=1;i<=N;++i)
-		for(int j=0;j<W+M*2;++j)
-			if(farm[es[j].to]>farm[es[j].from]+es[j].cost){
-				farm[es[j].to]=farm[es[j].from]+es[j].cost;
-				if(i==N) return true;
-			}
-	return false;
-}
- 
+struct edge{
+    int u,v,c;
+}p[5050];
 
 int main(){
-	scanf(" %d",&T);
-	while(T--){
-		scanf(" %d %d %d",&N,&M,&W);
-		for(int i=0;i<M*2;i+=2){
-			scanf(" %d %d %d",&es[i].from,&es[i].to,&es[i].cost);
-            es[i+1].from=es[i].to,es[i+1].to=es[i].from,es[i+1].cost=es[i].cost;
+    int F,N,M,W;
+    int u,v,c,d[505];
+    int m;
+    scanf(" %d",&F);
+    while(F--){
+        m=0;
+        memset(d,INF,sizeof(d));
+        scanf(" %d %d %d",&N,&M,&W);
+        for(int i=0;i<M;++i){
+            scanf(" %d %d %d",&u,&v,&c);
+            p[m].u=u,p[m].v=v,p[m++].c=c;
+            p[m].u=v,p[m].v=u,p[m++].c=c;
         }
-		for(int i=M*2;i<M*2+W;++i){
-			scanf(" %d %d %d",&es[i].from,&es[i].to,&es[i].cost);
-			es[i].cost=-es[i].cost;
-		}
-		if(bellman())
-			puts("YES");
-		else
-			puts("NO");
-	}
-	return 0;
+        for(int i=0;i<W;++i){
+            scanf(" %d %d %d",&u,&v,&c);
+            p[m].u=u,p[m].v=v,p[m++].c=-c;
+        }
+        d[1]=0;
+        bool ans=false,update;
+        for(int i=0;i<N;++i){
+            update=false;
+            for(int j=0;j<m;++j){
+                edge e=p[j];
+                if(d[e.u]+e.c<d[e.v]){
+                    update=true;
+                    d[e.v]=d[e.u]+e.c;
+                    if(i==N-1)
+                        ans=true;
+                }
+            }
+            if(!update) break;
+        }
+        if(ans)
+            puts("YES");
+        else
+            puts("NO");
+    }
+    return 0;
 }
