@@ -10,14 +10,17 @@ int dx[]={1,-1,0,0};
 int dy[]={0,0,1,-1};
 struct L{
 	int x,y,l;
-}
+};
 
 int main(){
 	int Mx,My,sx,sy,ex,ey,block,trap;
 	scanf(" %d %d %d %d %d %d",&Mx,&My,&sx,&sy,&ex,&ey);
 	scanf(" %d %d",&block,&trap);
 	++sx,++sy,++ex,++ey;
-	fill(mi,mi+1005*1005*3,INF);
+	for(int i=0;i<3;++i)
+		for(int j=0;j<1005;++j)
+			for(int k=0;k<1005;++k)
+				mi[j][k][i]=INF;
 	int x,y,li;
 	for(int i=0;i<1005;++i){
 		m[0][i]=1,m[i][0]=1;
@@ -33,7 +36,7 @@ int main(){
 	}
 	L t;
 	t.x=sx,t.y=sy,t.l=2;
-	mi[sx][sy][0]=0,mi[sx][sy][1]=0,mi[sx][xy][2]=0;
+	mi[sx][sy][0]=0,mi[sx][sy][1]=0,mi[sx][sy][2]=0;
 	queue<L> que;
 	que.push(t);
 	while(!que.empty()){
@@ -49,13 +52,13 @@ int main(){
 				mi[cx][cy][0]=mi[x][y][li]+1;
 				mi[cx][cy][1]=mi[x][y][li]+1;
 				mi[cx][cy][2]=mi[x][y][li]+1;
-				t.x=cx,t.y=ty,t.l=li;
+				t.x=cx,t.y=cy,t.l=li;
 				que.push(t);
 			}
 			else if(m[cx][cy]==2&&li>0&&mi[cx][cy][li]==INF){
 				mi[cx][cy][li-1]=mi[x][y][li]+1;
-				t.x=cx,t.y=ty,t.l=li-1;
-				que.push()
+				t.x=cx,t.y=cy,t.l=li-1;
+				que.push(t);
 			}
 		}
 	}
