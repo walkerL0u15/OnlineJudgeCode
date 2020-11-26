@@ -21,7 +21,7 @@ int main(){
 	sort(num+1,num+N+1);
 	for(int i=1;i<=N;++i)
 		num[i]+=num[i-1];
-	ll ans=0x3f3f3f3f;
+	ll ans=1e18;
 	ll total;
 	for(int i=1;i<N;++i){
 		total=D(1,i)+D(i+1,N);
