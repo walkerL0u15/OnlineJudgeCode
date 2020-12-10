@@ -1,0 +1,36 @@
+#include<cstdio>
+#include<cstring>
+#include<algorithm>
+using namespace std;
+const int INF=0x3f3f3f3f;
+
+int land[210][210];
+int sea[210][210];
+int dp[210][210];
+
+int main(){
+	int N,M;
+	while(scanf(" %d %d",&N,&M)==2&&N!=0){
+		{
+			memset(land,INF,sizeof(land));
+			memset(sea,INF,sizeof(sea));
+			memset(dp,INF,sizeof(dp));
+			int x,y,t;
+			char sl
+			for(int i=0;i<M;++i){
+				scanf(" %d %d %d %c",&x,&y,&t,&sl);
+				if(sl=='S')
+					sea[x][y]=t,sea[y][x]=t;
+				else
+					land[x][y]=t,land[y][x]=t;
+			}
+		}
+		for(int k=1;k<=N;++k)
+			for(int i=1;i<=N;++i)
+				for(int j=1;j<=N;++j){
+					land[i][j]=min(land[i][j],land[i][k]+land[k][j]);
+					sea[i][j]=min(sea[i][j],sea[i][k]+sea[k][j]);
+				}
+		
+	}
+}
