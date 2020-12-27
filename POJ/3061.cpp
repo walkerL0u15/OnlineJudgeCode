@@ -19,8 +19,7 @@ int main(){
 				total+=num[++t];
 			if(total<S) break;
 			ans=min(ans,t-s+1);
-			total-=num[s];
-			++s;
+			total-=num[s++];
 		}
 		if(ans==1e8)
 			printf("0\n");
