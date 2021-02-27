@@ -1,16 +1,17 @@
-#include<stdio.h>
-#include<string.h>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+
+int dp[(int)1e6+5];
 
 int main(){
-    int N,num=1,sum[1000005];
+    int N;
     scanf(" %d",&N);
-    memset(sum,0,sizeof(sum));
-    sum[0]=1;
-    while(num<=N){
-        for(int i=num;i<=N;++i)
-            sum[i]=(sum[i]+sum[i-num])%1000000000;
-        num<<=1;
+    dp[1]=1;
+    for(int i=2;i<=N;++i){
+        if(i&1) dp[i]=dp[i-1]%(int)1e9;
+        else dp[i]=(dp[i-1]+dp[i/2])%(int)1e9;
     }
-    printf("%d\n",sum[N]);
+    printf("%d\n",dp[N]);
     return 0;
 }
