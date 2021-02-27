@@ -1,30 +1,27 @@
 #include<cstdio>
-#include<cstring>
-#define MOD (int)1e6
 
-int dp[2][100005];
+int dp[1005][(int)1e5+10]={0};
 
 int main(){
-    int F,A,S,B,ant[1005],ans,num;
-    scanf(" %d %d %d %d",&F,&A,&S,&B);
-    memset(dp,0,sizeof(dp));
-    memset(ant,0,sizeof(ant));
-    dp[0][0]=dp[1][0]=1;
-    for(int i=0;i<A;++i){
-    	scanf(" %d",&num);
-    	ant[num]++;
-	}
-    for(int i=1;i<=F;++i){
-        for(int j=1;j<=B;++j){
-            if(j-1>=ant[i])
-                dp[i%2][j]=(dp[i%2][j-1]+dp[(i-1)%2][j]-dp[(i-1)%2][j-ant[i]-1]+MOD)%MOD;
-            else
-                dp[i%2][j]=(dp[i%2][j-1]+dp[(i-1)%2][j])%MOD;
-        }
+    int T,A,S,B;
+    scanf(" %d %d %d %d",&T,&A,&S,&B);
+    int ant[1005]={0},a;
+    for(int i=0;i<A;++i) {
+        scanf(" %d", &a);
+        ++ant[a];
     }
-    ans=0;
+    dp[0][0]=1;
+    for(int i=1;i<=T;++i)
+        for(int j=0;j<=A;++j){
+            if(j>=ant[i])
+                dp[i][j]=dp[i-1][j]+dp[i][j-1]-dp[i-1][j-1-ant[i]]+(int)1e6;//因可能<0
+            else
+                dp[i][j]=dp[i-1][j]+dp[i][j-1];
+            dp[i][j]%=(int)1e6;
+        }
+    int res=0;
     for(int i=S;i<=B;++i)
-    	ans=(ans+dp[F%2][i])%MOD;
-    printf("%d\n",ans);
+        res=(res+dp[T][i])%(int)1e6;
+    printf("%d\n",res);
     return 0;
 }
