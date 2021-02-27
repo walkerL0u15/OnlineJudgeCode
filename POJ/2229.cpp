@@ -1,6 +1,4 @@
 #include<cstdio>
-#include<algorithm>
-using namespace std;
 
 int dp[(int)1e6+5];
 
