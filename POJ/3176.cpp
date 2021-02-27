@@ -1,21 +1,22 @@
-#include<stdio.h>
-#include<string.h>
+#include<cstdio>
 #include<algorithm>
 using namespace std;
 
-int main()
-{
+int dp[2][235]={0};
+
+int main(){
     int N;
-    int p[2][355],ans=-1;
-    memset(p,0,sizeof(p));
     scanf(" %d",&N);
-    for(int i=1;i<=N;++i)
-        for(int j=1;j<=i;++j){
-            scanf(" %d",&p[i&1][j]);
-            p[i&1][j]+=max(p[!(i&1)][j],p[!(i&1)][j-1]);
+    int *crt=dp[0],*last=dp[1];
+    for(int i=1;i<=N;++i) {
+        for (int j = 1; j <= i; ++j) {
+            scanf(" %d", &crt[j]);
+            crt[j] += max(last[j], last[j - 1]);
         }
+        swap(crt,last);
+    }
+    int res=-1;
     for(int i=1;i<=N;++i)
-        ans=max(ans,p[N&1][i]);
-    printf("%d\n",ans);
-    return 0;
+        res=max(res,last[i]);
+    printf("%d\n",res);
 }
