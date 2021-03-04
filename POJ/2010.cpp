@@ -1,54 +1,57 @@
 #include<cstdio>
 #include<utility>
-#include<algorithm>
 #include<queue>
+#include<algorithm>
 using namespace std;
-#define sc first
-#define f second
-#define INF 0x3f3f3f3f
+typedef long long ll;
 typedef pair<int,int> P;
+#define f first
+#define s second
+
+struct Cal{
+    int sc,f;
+}c[(int)1e5+5];
+int N,C,F;
+bool cmp(Cal a,Cal b){
+    if(a.sc==b.sc)
+        return a.f<b.f;
+    return a.sc<b.sc;
+}
+bool cal(int x){
+    ll total=c[x].f;
+    priority_queue<P,vector<P>,greater<P> > pq;
+    for(int i=0;i<x;++i)
+        pq.push(P(c[i].f,c[i].sc));
+    for(int i=x+1;i<C;++i)
+        pq.push(P(c[i].f,c[i].sc));
+    int low=0,high=0;
+    while(!pq.empty()){
+        int t=pq.top().f,num=pq.top().s;
+        pq.pop();
+        if(num<x)
+            if(low<N/2){
+                total+=t;++low;
+            }
+        else if(high<N/2){
+            total+=t;++high;
+        }
+    }
+    return total<=F;
+}
 
 int main(){
-    int N,C,F,total;
-    int low[100005],high[100005];
-    P cows[100005];
     scanf(" %d %d %d",&N,&C,&F);
-    for(int i=0;i<C;++i){
-        scanf(" %d %d",&cows[i].sc,&cows[i].f);
+    for(int i=0;i<C;++i)
+        scanf(" %d %d",&c[i].sc,&c[i].f);
+    sort(c,c+C,cmp);
+    int l=-1,r=C+1;
+    while(r-l>1){
+        int mid=(l+r)/2;
+        if(cal(mid))
+            l=mid;
+        else
+            r=mid;
     }
-    sort(cows,cows+C);
-    {
-        total=0;
-        priority_queue<int,vector<int>,less<int> > pq;
-        for(int i=0;i<C;++i){
-            low[i]=(pq.size()==N/2?total:INF);
-            pq.push(cows[i].f);
-            total+=cows[i].f;
-            if(pq.size()>N/2){
-                total-=pq.top();
-                pq.pop();
-            }
-        }
-    }
-    {
-        total=0;
-        priority_queue<int,vector<int>,less<int> > pq;
-        for(int i=C-1;i>=0;--i){
-            high[i]=(pq.size()==N/2?total:INF);
-            pq.push(cows[i].f);
-            total+=cows[i].f;
-            if(pq.size()>N/2){
-                total-=pq.top();
-                pq.pop();
-            }
-        }
-    }
-    int ans=-1;
-    for(int i=C-1;i>=0;--i)
-        if(low[i]+high[i]+cows[i].f<=F){
-            ans=cows[i].sc;
-            break;
-        }
-    printf("%d\n",ans);
+    printf("%d\n",c[l].sc);
     return 0;
 }
