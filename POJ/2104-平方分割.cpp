@@ -3,7 +3,7 @@
 #include<vector>
 #include<algorithm>
 using namespace std;
-const int MaxN=1e5,B=1e3;
+const int MaxN=1e5,B=1000;
 
 int N,M,s,e,k;
 int a[MaxN+10],as[MaxN+10];
@@ -11,10 +11,10 @@ vector<int> box[MaxN/B+5];
 int sum(int x){
     x=as[x];
     int res=0;
-    int tr=e-1,tl=s;
+    int tr=e+1,tl=s;
     while(tl<tr&&tl%B!=0) if(a[tl++]<=x) ++res;
-    while(tl<tr&&tr%B!=0) if(a[tr--]<=x) ++res;
-    for(int i=tl/B;i<=tr/B;++i)
+    while(tl<tr&&tr%B!=0) if(a[--tr]<=x) ++res;
+    for(int i=tl/B;i<=tr/B-1;++i)
         res+=upper_bound(box[i].begin(),box[i].end(),x)-box[i].begin();
     return res;
 }
@@ -42,6 +42,7 @@ int main(){
     sort(as,as+N);
     while(M--){
         scanf(" %d %d %d",&s,&e,&k);
+        --s,--e;
         printf("%d\n",as[BS()]);
     }
     return 0;
