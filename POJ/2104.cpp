@@ -1,30 +1,28 @@
 #include<cstdio>
-#include<vector>
 #include<cstring>
+#include<vector>
 #include<algorithm>
 using namespace std;
-const int MaxN=1e5;
+const int MaxN=1e5,B=1e3;
 
-int N,M,s,e,k,box_s;
-vector<int> box[(int)sqrt(MaxN)+10];
-int a[MaxN+5],sa[MaxN+5];
-void init(){
-    for(int i=0;i<box_s;++i){
-        for(int j=0;j<box_s;++j)
-            box[i].push_back(i*box_s+j);
-        sort(box[i].begin(),box[i].end());
-    }
-    return;
-}
-int T(int num){//as[num]
-    int sb=(s+box_s-1)/box_s;
-    int eb=e/box_s;
+int N,M,s,e,k;
+int a[MaxN+10],as[MaxN+10];
+vector<int> box[MaxN/B+5];
+int sum(int x){
+    x=as[x];
+    int res=0;
+    int tr=e-1,tl=s;
+    while(tl<tr&&tl%B!=0) if(a[tl++]<=x) ++res;
+    while(tl<tr&&tr%B!=0) if(a[tr--]<=x) ++res;
+    for(int i=tl/B;i<=tr/B;++i)
+        res+=upper_bound(box[i].begin(),box[i].end(),x)-box[i].begin();
+    return res;
 }
 int BS(){
-    int l=-1,r=N+1;
+    int r=N+1,l=-1;
     while(r-l>1){
         int mid=(r+l)/2;
-        if(T(mid)>=k)
+        if(sum(mid)>=k)
             r=mid;
         else
             l=mid;
@@ -34,15 +32,17 @@ int BS(){
 
 int main(){
     scanf(" %d %d",&N,&M);
-    for(int i=0;i<N;++i)
+    for(int i=0;i<N;++i){
         scanf(" %d",&a[i]);
-    memcpy(sa,a,sizeof(a));
-    sort(sa,sa+N);
-    box_s=sqrt(N);
-    init();
+        box[i/B].push_back(a[i]);
+    }
+    for(int i=0;i<=(N-1)/B;++i)
+        sort(box[i].begin(),box[i].end());
+    memcpy(as,a,sizeof(a));
+    sort(as,as+N);
     while(M--){
         scanf(" %d %d %d",&s,&e,&k);
-        printf("%d\n",a[BS()]);
+        printf("%d\n",as[BS()]);
     }
     return 0;
 }
