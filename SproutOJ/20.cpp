@@ -1,4 +1,4 @@
-..sprout 20
+//sprout 20
 #include<cstdio>
 #include<queue>
 #include<cstring>
