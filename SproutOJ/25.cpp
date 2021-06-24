@@ -12,12 +12,6 @@ Node *head[105]={NULL},*last[105]={NULL};
 Node *newNode;
 
 int main(){
-	#ifndef ONLINE_JUDGE
-
-freopen("input.txt","r",stdin);
-freopen("output.txt","w",stdout);
-
-#endif
 	int N,M,id,s_i,s_j;
 	char rec[10];
 	scanf(" %d %d",&N,&M);
