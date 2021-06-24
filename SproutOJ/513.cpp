@@ -10,12 +10,6 @@ typedef pair<ll,ll> P;
 stack<P> st;
 
 int main(){
-    #ifndef ONLINE_JUDGE
-
-freopen("input.txt","r",stdin);
-freopen("output.txt","w",stdout);
-
-#endif
     ll N,a,res=0,cnt;
     scanf(" %lld",&N);
     for(ll i=0;i<N;++i){
