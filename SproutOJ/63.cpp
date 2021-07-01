@@ -19,12 +19,6 @@ void dfs(int p,int idx){
 }
 
 int main(){
-    #ifndef ONLINE_JUDGE
-
-freopen("input.txt","r",stdin);
-freopen("output.txt","w",stdout);
-
-#endif
     bool a=true;
     while(scanf(" %d",&k)&&k!=0){
         if(!a)//無言，不這樣過不了
