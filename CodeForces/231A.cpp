@@ -13,6 +13,6 @@ int main(){
         if(sum>=2)
             ++total;
     }
-    printf(" %d",total);
+    printf(" %d\n",total);
     return 0;
 }
