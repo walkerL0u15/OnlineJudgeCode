@@ -13,7 +13,6 @@ void dc(int len){
 }
 
 void solve(int N){
-
     arr[0][0]=2,arr[1][1]=2,arr[0][1]=3,arr[1][0]=1;
     if(N==1){
         Report(1);return;
