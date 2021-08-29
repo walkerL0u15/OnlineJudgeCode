@@ -1,31 +1,32 @@
-#include<iostream>
+#include<cstdio>
 #include<stack>
-#include<stdio.h>
 using namespace std;
 
-int main()
-{
-	int N,c;
-	stack<int>station;
-	while(scanf("%d",&N)&&N!=0){
-		station=stack<int>();
-		int to[N];
-		while(scanf("%d",&to[0])&&to[0]!=0){
-			c=0;
+int main(){
+	int N,B[1005];
+	int cnt;
+	stack<int> station;
+	while(scanf(" %d",&N)&&N!=0){
+		while(scanf(" %d",&B[0])&&B[0]!=0){
+			station=stack<int>();
 			for(int i=1;i<N;++i)
-				scanf("%d",&to[i]);
-			for(int i=1;i<=N;++i){
-				if(i==to[c]){
-					++c;
-					while(!station.empty()&&station.top()==to[c]){
+				scanf(" %d",&B[i]);
+			cnt=0;
+			for(int A=1;A<=N;++A){
+				if(B[cnt]!=A)
+					station.push(A);
+				else{
+					++cnt;
+					while(!station.empty()&&station.top()==B[cnt]){
 						station.pop();
-						++c;
+						cnt++;
 					}
 				}
-				else
-					station.push(i);
 			}
-			printf("%s\n",(c==N?"Yes":"No"));
+			if(station.empty())
+				printf("Yes\n");
+			else
+				printf("No\n");
 		}
 		printf("\n");
 	}
