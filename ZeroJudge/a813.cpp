@@ -1,22 +1,32 @@
-#include<iostream>
+#include<cstdio>
+#include<stack>
+#include<utility>
 using namespace std;
+typedef pair<int,int> P;
+typedef long long ll;
+#define f first
+#define s second
 
-int main()
-{
-	unsigned int N,ans=0,big=0;
-	scanf("%u",&N);
-	int house[N];
-	for(int i=0;i<N;++i){
-		scanf("%d",&house[i]);
-		big=0;
-		for(int j=i-1;j>=0;--j)
-			if(house[j]>=big){
-				big=house[j];
-				++ans;
-				if(big>house[i])
-					break;
-			}
+int main(){
+	int N,h;
+	ll ans=0;
+	stack<P> stk;
+	scanf(" %d",&N);
+	while(N--){
+		scanf(" %d",&h);
+		while(!stk.empty()&&h>stk.top().f){
+			ans+=stk.top().s;
+			stk.pop();
+		}
+		if(!stk.empty()&&h==stk.top().f){
+			ans+=stk.top().s;
+			++stk.top().s;
+		}
+		else
+			stk.push(make_pair(h,1));
+		if(stk.size()>1)
+			ans++;
 	}
-	printf("%u",ans*2);
+	printf("%lld\n",ans*2);
 	return 0;
 }
