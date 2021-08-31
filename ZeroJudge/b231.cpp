@@ -1,27 +1,29 @@
-#include<iostream>
+#include<cstdio>
+#include<utility>
+#include<algorithm>
 using namespace std;
+typedef pair<int,int> P;
+#define f first
+#define s second
 
-int main()
-{
-	int N,biggest=0,remain=0;
-	cin>>N;
-	int draw[N],print[N],total[N];
-	for(int i=0;i<N;++i){
-		cin>>print[i]>>draw[i];
-		total[i]=print[i]+draw[i];
-		for(int j=i;j>=1;--j)
-			if(total[j]>total[j-1]){
-				swap(print[j],print[j-1]);
-				swap(draw[j],draw[j-1]);
-				swap(total[j],total[j-1]);
-			}
+P book[1005];//f:print s:pin
+
+bool cmp(P &a,P &b){
+	return a.s>b.s;
+}
+
+int main(){
+	int N;
+	while(scanf(" %d",&N)==true){
+		for(int i=0;i<N;++i)
+			scanf(" %d %d",&book[i].f,&book[i].s);
+		sort(book,book+N,cmp);
+		int time=0,ans=-1;
+		for(int i=0;i<N;++i){
+			time+=book[i].f;
+			ans=max(time+book[i].s,ans);
+		}
+		printf("%d\n\n",ans);
 	}
-	for(int i=0;i<N;++i){
-		remain+=print[i];
-		remain+=draw[i];
-		if(remain>biggest)
-			biggest=remain;
-		remain-=draw[i];
-	}
-	cout<<biggest;
+	return 0;
 }
