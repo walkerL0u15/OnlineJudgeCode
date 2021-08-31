@@ -1,58 +1,52 @@
-#include<iostream>
-#include<stdio.h>
+#include<cstdio>
 #include<map>
 #include<algorithm>
 using namespace std;
 
-struct str{int num,P,A;};
-bool cmp(str a,str b){
-	if(a.P!=b.P)
-		return a.P<b.P;
-	return a.A<b.A;
+struct A{
+	int a=2000,num,p;
+	A(int _a=0,int _num=0,int _p=0):a(_a),num(_num),p(_p){}
+};
+int p_cnt=0,a_cnt=0;
+map<string,int> Ptime,Atime;
+string Pname[1005];
+string Aname[1005];
+A animal[1005];
+
+bool cmp(A &x,A &y){
+	if(x.p==y.p)
+		return x.a<y.a;
+	return x.p<y.p;
 }
 
-int main()
-{
-	//init
-	str S[1005];
-	map<string,int> Pin,Ain;
-	string aname[1005],pname[1005];
-	int N,asize=-1,psize=-1;
-	char animal[25],place[25];
-	//cal
-	scanf("%d",&N);
+int main(){
+	int N,num;
+	char a[30],p[30];
+	scanf(" %d",&N);
 	for(int i=0;i<N;++i){
-		scanf("%s%d%s",&animal,&S[i].num,&place);
-		if(Ain.find(animal)==Ain.end()){
-			Ain[animal]=++asize;
-			aname[asize]=animal;
+		scanf(" %s %d %s",&a,&num,&p);
+		if(Ptime.find(p)==Ptime.end()){
+			Pname[p_cnt]=p;
+			Ptime[p]=p_cnt++;
 		}
-		if(Pin.find(place)==Pin.end()){
-			Pin[place]=++psize;
-			pname[psize]=place;
+		if(Atime.find(a)==Atime.end()){
+			Aname[a_cnt]=a;
+			Atime[a]=a_cnt++;
 		}
-		S[i].P=Pin[place];
-		S[i].A=Ain[animal];
+		animal[i]=A(Atime[a],num,Ptime[p]);
 	}
-	sort(S,S+N,cmp);
-	//output
-	int i=0,p=0,t,c;
-	while(p<=psize){
-		printf("%s :",pname[p++].c_str());
-		do{
-			printf(" %s ",aname[S[i].A].c_str());
-			c=0;
-			t=i;
-			while(i<N&&S[t].P==S[i].P&&S[t].A==S[i].A){
-				c+=S[i].num;
-				++i;
-			}
-			printf("%d",c);
-			if(i==N||S[i].P!=S[i-1].P)
-				printf("\n");
-			else
-				printf(",");
-		}while(i<N&&S[i].P<p);
+	sort(animal,animal+N,cmp);
+	int cnt=0;
+	for(int i=0;i<p_cnt;++i){
+		printf("%s :",Pname[i].c_str());
+		while(cnt<N&&animal[cnt].p==i){
+			int sum=0,ccnt=cnt;
+			while(animal[cnt].p==i&&animal[cnt].a==animal[ccnt].a)
+				sum+=animal[cnt++].num;
+			printf(" %s %d",Aname[animal[ccnt].a].c_str(),sum);
+			if(animal[cnt].p==i) printf(",");
+			else printf("\n");
+		}
 	}
 	return 0;
 }
