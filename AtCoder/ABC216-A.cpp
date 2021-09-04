@@ -1,4 +1,3 @@
-//ABC216-A
 #include<cstdio>
 
 int main(){
