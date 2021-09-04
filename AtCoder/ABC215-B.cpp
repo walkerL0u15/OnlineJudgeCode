@@ -1,4 +1,3 @@
-//ABC215-B.cpp
 #include<iostream>
 #include<cmath>
 using namespace std;
